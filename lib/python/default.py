@@ -6,7 +6,7 @@ def SelectAntennas(energy, direction, position, topo): #GeV, meters
     #adaptation
     energy=energy*1e9 #from GeV to eV
     theta=np.arccos(direction[2])
-    phi=np.arccos(direction[0]/np.sin(theta))
+    phi=np.arctan2(direction[1], direction[0])
     xt=position[0] #position of tau decay
     yt=position[1]
     zt=position[2]
@@ -88,8 +88,6 @@ def SelectAntennas(energy, direction, position, topo): #GeV, meters
     indemax=np.nonzero(testedgemax>=0)
     ind=np.nonzero((testradius<=0) & (testedgemin<=0) & (testedgemax>=0))
 
-    return ind[0] * xpp.shape[1] + ind[1]
-
     #check if shower crash into a mountain early (before xmax)
     zinshower=np.arange(0,-zcmin-deltar,-deltar)
     xinshower=np.zeros(len(zinshower))
@@ -116,4 +114,4 @@ def SelectAntennas(energy, direction, position, topo): #GeV, meters
         if len(np.nonzero(realztopo>zintopo)[0]) >0:
             keep[i]=-1
 
-    return (x[ind][keep==1],y[ind][keep==1],z[ind][keep==1])
+    return ind[0][keep==1] * xpp.shape[1] + ind[1][keep==1]
