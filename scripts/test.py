@@ -7,7 +7,7 @@ import numpy
 
 from grand_tour import Topography
 from default import SelectAntennas
-from trigger import select_antenna
+from preselector import Preselector
 
 # Get a handle for the topography
 topo = Topography(latitude=42.928056, longitude=86.741667,
@@ -49,10 +49,11 @@ t0 = time.time()
 a = SelectAntennas(energy, direction, position, topo)
 print "  --> Done in {:.1f} s".format(time.time() - t0)
 
-# Call the new selection
-print "# Running new selection ..."
+# Call the preselector
+print "# Running preselector ..."
 t0 = time.time()
-b = select_antenna(antenna, energy, direction, position, topo)
+selector = Preselector(topo, { "position" : antenna })
+b = selector(energy, position, direction)
 print "  --> Done in {:.1f} s".format(time.time() - t0)
 
 for i in xrange(len(a)):
