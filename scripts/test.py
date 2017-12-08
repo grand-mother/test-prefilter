@@ -43,7 +43,7 @@ energy = 1E+09
 azimuth, elevation = 180., -5.
 theta, phi = map(lambda x: numpy.deg2rad(90. - x), (azimuth, elevation))
 s = numpy.sin(theta)
-direction = (s * numpy.cos(phi), s * numpy.sin(phi), numpy.cos(theta))
+direction = (-s * numpy.cos(phi), -s * numpy.sin(phi), -numpy.cos(theta))
 position = (0., 0., topo.ground_altitude(0., 0.) + 1000.)
 
 # Call the default selection

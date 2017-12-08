@@ -5,8 +5,8 @@ def SelectAntennas(energy, direction, position, topo): #GeV, meters
 
     #adaptation
     energy=energy*1e9 #from GeV to eV
-    theta=np.arccos(direction[2])
-    phi=np.arctan2(direction[1], direction[0])
+    theta=np.arccos(-direction[2])
+    phi=np.arctan2(-direction[1], -direction[0])
     xt=position[0] #position of tau decay
     yt=position[1]
     zt=position[2]

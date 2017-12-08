@@ -38,7 +38,7 @@ def Preselector(topography, antenna):
         zcmax = 27000. * numpy.log10(shower_energy / 1E+08) + 22000.  # m
 
         # Check if the shower crashes into a mountain early, before xmax
-        s = numpy.arange(0., -zcmin - deltar, -deltar)
+        s = numpy.arange(0., zcmin + deltar, deltar)
         xs, ys, zs = [position[i] + direction[i] * s for i in xrange(3)]
         zg = [topography.ground_altitude(xi, yi) for xi, yi in zip(xs, ys)]
         if (zs <= zg).any():
@@ -48,15 +48,15 @@ def Preselector(topography, antenna):
         dr = ra - position
         zp = numpy.dot(dr, direction)
         rp2 = numpy.sum(dr**2, axis=1) - zp**2
-        test_radius = rp2 <= ((zp + zcmin) * numpy.tan(gamma))**2
-        test_edgemin = zp <= -zcmin
-        test_edgemax = zp >= -zcmax
+        test_radius = rp2 <= ((zp - zcmin) * numpy.tan(gamma))**2
+        test_edgemin = zp >= zcmin
+        test_edgemax = zp <= zcmax
         index = numpy.nonzero(test_radius & test_edgemin & test_edgemax)[0]
         if len(index) == 0:
             return index
 
         # Check for shadowing
-        r0 = position - zcmin * numpy.array(direction)
+        r0 = position + zcmin * numpy.array(direction)
 
         def check_shadowing(i):
             u = ra[i, :] - r0
