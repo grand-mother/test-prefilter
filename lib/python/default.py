@@ -20,10 +20,10 @@ def SelectAntennas(energy, direction, position, topo): #GeV, meters
     zcmax=27000*np.log10(energy/1e17)+22000 #small (cons)
 
     deltar=200
-    antxmin=-100000
-    antxmax=100000
-    antymin=-100000
-    antymax=100000
+    antxmin=-30000
+    antxmax=30000
+    antymin=-30000
+    antymax=30000
 
     def TopoToShower(x,y,z,xt,yt,zt,theta,phi): #from coordinates in the topography frame to coordinates in the shower frame
         xp=x-xt
@@ -74,6 +74,7 @@ def SelectAntennas(energy, direction, position, topo): #GeV, meters
 
 
     x,y,z=GetTopography(antxmin,antxmax,antymin,antymax,deltar,topo)
+    z += 3.
 
     xpp,ypp,zpp=TopoToShower(x,y,z,xt,yt,zt,theta,phi)
 

@@ -2,6 +2,7 @@
 import sys
 sys.path += ["deps/grand-tour/lib", "lib/python"]
 
+import json
 import time
 import numpy
 
@@ -16,10 +17,10 @@ topo = Topography(latitude=42.928056, longitude=86.741667,
 # Generate the antenna positions
 def get_antenna():
     deltar = 200.
-    antxmin = -1.E+05
-    antxmax = 1.E+05
-    antymin = -1.E+05
-    antymax = 1.E+05
+    antxmin = -3.E+04
+    antxmax = 3.E+04
+    antymin = -3.E+04
+    antymax = 3.E+04
 
     x = numpy.arange(antxmin, antxmax, deltar)
     y = numpy.arange(antymin, antymax, deltar)
@@ -27,12 +28,14 @@ def get_antenna():
     for i, xi in enumerate(x):
         i *= len(y)
         for j, yj in enumerate(y):
-            r[i + j, :] = xi, yj, topo.ground_altitude(xi, yj)
+            r[i + j, :] = xi, yj, topo.ground_altitude(xi, yj) + 3.
     return r
 
 print "# Generating antenna positions ..."
 t0 = time.time()
 antenna = get_antenna()
+with open("antenna-positions.json", "wb+") as f:
+    json.dump(antenna.tolist(), f)
 print "  --> Done in {:.1f} s".format(time.time() - t0)
 
 # Shower settings
